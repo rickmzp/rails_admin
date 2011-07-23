@@ -1,5 +1,13 @@
 # coding: utf-8
 
+unless defined?(Random)
+  class Random
+    def self.rand(*args)
+      Kernel.rand(*args)
+    end
+  end
+end
+
 FactoryGirl.define do
   factory :player do
     sequence(:name) { |n| "Player #{n}" }
@@ -9,20 +17,20 @@ FactoryGirl.define do
 
   factory :draft do
     date 1.week.ago
-    round rand(100000)
-    pick rand(100000)
-    overall rand(100000)
+    round Random.rand(100000)
+    pick Random.rand(100000)
+    overall Random.rand(100000)
     sequence(:college) {|n| "College #{n}"}
     association :team
     association :player
   end
 
   factory :team do
-    division_id rand(99999)
+    division_id Random.rand(99999)
     sequence(:name) { |n| "Team #{n}" }
     sequence(:manager) { |n| "Manager #{n}" }
-    founded 1869 + rand(130)
-    wins(wins = rand(163))
+    founded 1869 + Random.rand(130)
+    wins(wins = Random.rand(163))
     losses 162 - wins
     win_percentage("%.3f" % (wins.to_f / 162).to_f)
   end
